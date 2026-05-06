@@ -73,6 +73,7 @@ header {
   padding: 10px 20px;
   border-radius: 30px;
   border: 1px solid var(--accent-color);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -80,18 +81,42 @@ header {
   background: none;
   border: none;
   color: white;
+  position: relative;
+  /* Necessário para posicionar a bolinha neon */
   font-size: 1.2rem;
   cursor: pointer;
   padding: 10px;
-  display: flex; /* Transforma o botão em um container flex */
-  align-items: center; /* Centraliza o ícone verticalmente */
-  justify-content: center; /* Centraliza o ícone horizontalmente */
+  display: flex;
+  /* Transforma o botão em um container flex */
+  align-items: center;
+  /* Centraliza o ícone verticalmente */
+  justify-content: center;
+  /* Centraliza o ícone horizontalmente */
   transition: color 0.2s;
 }
 
 .nav button.active {
   color: var(--accent-color);
-  pointer-events: none; /* Desativa o clique pois já estamos na Home */
+  pointer-events: none;
+  /* Desativa o clique pois já estamos na Home */
+}
+
+/* Bolinha neon abaixo do ícone ativo */
+.nav button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-color), 0 0 5px var(--accent-color);
+}
+
+.nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
 }
 
 .nav button:hover {

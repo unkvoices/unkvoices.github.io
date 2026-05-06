@@ -36,14 +36,27 @@ function injectNavigationBar() {
 
     const navHtml = `
         <div class="nav">
-            <button onclick="goBack()" title="Voltar"><i class="fas fa-chevron-left"></i></button>
+            <button id="nav-back" onclick="goBack()" title="Voltar"><i class="fas fa-chevron-left"></i></button>
             <button onclick="goHome()" title="Início" class="${isHome ? 'active' : ''}">
                 <i class="fas fa-house"></i>
             </button>
-            <button onclick="goForward()" title="Avançar"><i class="fas fa-chevron-right"></i></button>
+            <button id="nav-forward" onclick="goForward()" title="Avançar"><i class="fas fa-chevron-right"></i></button>
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', navHtml);
+
+    // Atualiza o estado dos botões de voltar/avançar
+    const backBtn = document.getElementById('nav-back');
+    const forwardBtn = document.getElementById('nav-forward');
+
+    if (window.navigation) {
+        // API moderna (Chrome/Edge)
+        backBtn.disabled = !navigation.canGoBack;
+        forwardBtn.disabled = !navigation.canGoForward;
+    } else {
+        // Fallback básico para navegadores antigos (apenas "Voltar")
+        if (window.history.length <= 1) backBtn.disabled = true;
+    }
 }
 
 /**
