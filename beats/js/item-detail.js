@@ -18,8 +18,8 @@ async function initializeItemDetail() {
     try {
         // 2. Carrega tanto o conteúdo principal quanto os posts do YouTube
         const [contentResponse, postsResponse] = await Promise.all([
-            fetch("data/conteudo.json"),
-            fetch("data/posts.json"),
+            fetch("/beats/data/conteudo.json"),
+            fetch("/beats/data/posts.json"),
         ]);
 
         if (!contentResponse.ok) throw new Error(`Erro ao carregar conteudo.json: ${contentResponse.status}`);

@@ -28,15 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Função para marcar o link de navegação ativo
     const setActiveNavLink = () => {
         const navLinks = document.querySelectorAll('.navbar .menu a');
-        const currentPage = window.location.pathname.split('/').pop();
+        const currentPath = window.location.pathname;
 
-        navLinks.forEach(link => { // Itera sobre todos os links
-            const linkPage = link.getAttribute('href').split('/').pop();
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            // Compara o caminho absoluto do link com o caminho atual da URL
+            const linkPath = new URL(link.href, window.location.origin).pathname;
 
-            link.classList.remove('active'); // Limpa a classe 'active' de todos os links primeiro
-
-            // Trata o caso da página inicial (index.html ou /)
-            if (linkPage === currentPage || (currentPage === '' && linkPage === 'index.html')) {
+            if (currentPath === linkPath || (currentPath.endsWith('/') && linkPath.endsWith('index.html'))) {
                 link.classList.add('active');
             }
         });
@@ -131,9 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Carrega todos os componentes e depois dispara um evento
     const loadAllComponents = async () => {
         await Promise.all([
-            loadComponent("header-placeholder", "data/header.html"),
-            loadComponent("footer-placeholder", "data/footer.html"),
-            loadComponent("alert-placeholder", "data/alert.html")
+            // Usamos /beats/ para garantir que a busca comece da raiz do projeto
+            loadComponent("header-placeholder", "/beats/data/header.html"),
+            loadComponent("footer-placeholder", "/beats/data/footer.html"),
+            loadComponent("alert-placeholder", "/beats/data/alert.html")
         ]);
         // Dispara um evento global quando tudo estiver carregado
         document.dispatchEvent(new Event('componentsLoaded'));

@@ -1,7 +1,7 @@
 :root {
   --bg-color: #01030d;
   --accent-color: #0cb8cf;
-  --card-bg: rgba(22, 25, 45, 0.86);
+  --card-bg: rgba(12, 53, 70, 0.86);
   --text-color: #e1e2e3;
 }
 
@@ -39,6 +39,7 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   aspect-ratio: 1 / 1;
+  padding: 10px 20px;
   /* Força o formato quadrado */
   display: flex;
   align-items: center;

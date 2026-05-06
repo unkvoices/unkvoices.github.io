@@ -47,8 +47,8 @@ function startContentScript() {
         try {
             // Carrega os dados e as contagens de visualizações em paralelo
             const [contentResponse, postsResponse] = await Promise.all([
-                fetch("data/conteudo.json"),
-                fetch("data/posts.json"),
+                fetch("/beats/data/conteudo.json"),
+                fetch("/beats/data/posts.json"),
             ]);
 
             if (!contentResponse.ok) throw new Error(`Erro ao carregar conteudo.json: ${contentResponse.status}`);
