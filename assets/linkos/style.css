@@ -1,0 +1,833 @@
+/* Variáveis de cores e configurações globais do tema */
+:root {
+  --color1: #010419;
+  --color2: #121429;
+  --color3: #2b2e42;
+  --color4: #3f4256;
+  --color5: #54576a;
+  --color6: #e1e2e3;
+  --color7: #f23131;
+  --color8: #960000;
+  --color9: #3a0202;
+  --c1: #0cb8cf;
+  --c2: #087f8f;
+  --c3: #04373d;
+  --c4: #095006;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-strong: rgba(255, 255, 255, 0.09);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --font: poppins;
+}
+
+/* Reset básico de CSS e box-sizing */
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  /* Remove o brilho ao tocar em botões no mobile */
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* Configurações globais do corpo da página */
+body {
+  font-family: var(--font), sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(12, 184, 207, 0.08), transparent 40%),
+    #01030d;
+  color: var(--color6);
+  /* Suporte para safe area (notch) em dispositivos móveis */
+  padding: 40px 16px env(safe-area-inset-bottom, 24px);
+  user-select: none;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Bloqueio de scroll durante o splash */
+body.no-scroll {
+  height: 100dvh !important;
+  overflow: hidden !important;
+  touch-action: none; 
+}
+
+/* Permite seleção apenas em inputs */
+input,
+textarea,
+[contenteditable="true"] {
+  user-select: text;
+}
+
+/* Container principal do gerador */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: min(100%, 720px);
+  min-height: min(760px, calc(100dvh - 120px));
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(22, 25, 45, 0.86), rgba(10, 13, 29, 0.96));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  gap: 10px;
+  transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+}
+
+/* Estado de carregamento com desfoque progressivo */
+body.is-loading .container {
+  filter: blur(20px);
+  transform: scale(0.96);
+  opacity: 0.3;
+}
+
+/* Estilização da Logo Principal */
+.mainLogo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.mainLogo img {
+  max-height: 54px;
+  width: auto;
+  filter: drop-shadow(0 0 15px rgba(12, 184, 207, 0.2));
+}
+
+.mainLogo h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color6);
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-transform: none;
+}
+
+.mainLogo h1 span {
+  color: var(--c1);
+}
+
+/* Definições de animações */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bloco de introdução (atualmente comentado no HTML) */
+.introBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(22, 25, 45, 0.86), rgba(10, 13, 29, 0.96));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  gap: 16px;
+  padding: 16px;
+
+}
+
+.eyebrow {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  color: var(--c1);
+}
+
+.pageTitle {
+  font-size: clamp(1.65rem, 2vw + 1rem, 2.45rem);
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+.pageSubtitle {
+  max-width: 48ch;
+  margin: 0 auto;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: rgba(225, 226, 227, 0.72);
+}
+
+/* Painéis genéricos para agrupar elementos */
+.panel {
+  width: 100%;
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.inputPanel,
+.previewPanel,
+.qr_mode {
+  padding: 12px;
+}
+
+.containerElement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modeFields {
+  margin-top: 10px;
+}
+
+.is-hidden {
+  display: none;
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 12px;
+}
+/* Blocos de campos de entrada individuais */
+
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--color6);
+  font-weight: 600;
+}
+
+.fieldBlock span,
+.fieldCheck span {
+  font-size: clamp(0.75rem, 2vw, 0.82rem);
+}
+
+/* Estilização de inputs e campos de texto */
+.containerElement input {
+  min-height: 42px;
+  padding: 8px 12px;
+  width: min(100%, 460px);
+  outline: none;
+  font-size: 0.9rem;
+  border-radius: 14px;
+  border: solid 2px var(--color4);
+  background: rgba(1, 4, 25, 0.45);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  color: var(--color6);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.containerElement input::placeholder {
+  color: rgba(225, 226, 227, 0.56);
+}
+
+.containerElement input:focus {
+  border-color: var(--c1);
+  background: rgba(1, 4, 25, 0.72);
+  box-shadow: 0 0 0 4px rgba(12, 184, 207, 0.14);
+}
+
+#mainTextarea {
+  width: min(100%, 460px);
+  min-height: 100px;
+  padding: 12px;
+  font-size: 0.9rem;
+  border-radius: 14px;
+  border: solid 2px var(--color4);
+  background: rgba(1, 4, 25, 0.45);
+  color: var(--color6);
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  resize: vertical;
+  font-family: inherit;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.fieldBlock input,
+.fieldBlock select,
+.fieldBlock textarea {
+  min-height: 38px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 14px;
+  border: solid 2px var(--color4);
+  background: rgba(1, 4, 25, 0.45);
+  color: var(--color6);
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  overflow-y: hidden;
+}
+
+.fieldBlock textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.fieldBlock input::placeholder,
+.fieldBlock textarea::placeholder {
+  color: rgba(225, 226, 227, 0.56);
+}
+
+.fieldBlock input:focus,
+.fieldBlock select:focus,
+.fieldBlock textarea:focus {
+  border-color: var(--c1);
+  background: rgba(1, 4, 25, 0.72);
+  box-shadow: 0 0 0 4px rgba(12, 184, 207, 0.14);
+}
+
+.textarea-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: min(100%, 460px);
+  margin-top: 4px;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: rgba(225, 226, 227, 0.6);
+  margin: 0;
+}
+
+.char-counter.exceeded {
+  color: var(--color7);
+  /* Cor vermelha para limite excedido */
+}
+
+/* Estilização de checkboxes */
+
+.fieldCheck {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 4px;
+  color: var(--color6);
+  font-weight: 600;
+}
+
+.fieldCheck input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--c1);
+}
+
+/* Grupo de botões de ação abaixo do input */
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 460px;
+  justify-content: center;
+  flex-wrap: nowrap; /* Garante que os 4 botões fiquem na mesma linha */
+}
+
+/* Estilo unificado para todos os botões de ação */
+.containerElement button,
+.downloadBtn,
+.shareBtn,
+#copy_btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color6);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: all 160ms ease;
+  box-shadow: none;
+}
+
+.containerElement button:hover:not(:disabled),
+.downloadBtn:hover:not(:disabled),
+.shareBtn:hover:not(:disabled),
+#copy_btn:hover:not(:disabled) {
+  border-color: rgba(12, 184, 207, 0.35);
+  background: rgba(12, 184, 207, 0.08);
+  transform: translateY(-2px);
+}
+
+.containerElement button:active:not(:disabled),
+.downloadBtn:active:not(:disabled),
+.shareBtn:active:not(:disabled),
+#copy_btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+/* Configuração da seleção de modo do QR Code */
+.qr_mode {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  gap: 8px;
+}
+
+.qr_mode h4,
+.previewPanel h4 {
+  text-align: center;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+#modeElement,
+#themeElement {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+#themeElement {
+  margin-bottom: 4px;
+}
+
+#modeElement>label,
+#themeElement>label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+#themeElement label span {
+  display: none;
+}
+
+#themeElement i {
+  font-size: 1.2rem;
+}
+
+#modeElement>label:hover,
+#themeElement>label:hover {
+  border-color: rgba(12, 184, 207, 0.35);
+  background: rgba(12, 184, 207, 0.08);
+}
+
+#modeElement input[type="radio"],
+#themeElement input[type="radio"] {
+  accent-color: var(--c1);
+}
+
+#modeElement>label:has(input:checked) {
+  border-color: rgba(12, 184, 207, 0.7);
+  background: linear-gradient(180deg, rgba(12, 184, 207, 0.18), rgba(12, 184, 207, 0.08));
+  box-shadow: 0 0 0 1px rgba(12, 184, 207, 0.16) inset;
+}
+
+/* Temas Visuais do QR Code (Claro/Escuro) */
+#themeElement>label:has(input[value="claro"]:checked) {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  color: #fff;
+}
+
+#themeElement>label:has(input[value="escuro"]:checked) {
+  border-color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Painel de Visualização do QR Code Gerado */
+.previewPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#statusMessage {
+  min-height: 24px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--c1);
+}
+
+#statusMessage.error {
+  color: #ff8e8e;
+}
+
+#qrcode {
+  width: min(100%, 360px);
+  min-height: clamp(220px, 42vw, 360px);
+  aspect-ratio: square;
+  border: none;
+  /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04); */
+  background: none;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+/* Botões de ação do QR Code (Download, Copiar, Partilhar) */
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+}
+
+/* Painel de Histórico */
+.historyPanel {
+  margin-top: 8px;
+  padding: 16px;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.textBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--c1);
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  padding: 4px;
+}
+
+.textBtn:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  color: var(--c1);
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.historyItem:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.historyItem span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.historyItem small {
+  opacity: 0.5;
+  font-size: 0.75rem;
+}
+
+.emptyHistory {
+  text-align: center;
+  opacity: 0.5;
+  font-size: 0.9rem;
+  padding: 10px;
+}
+
+#qrcode img,
+#qrcode canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+
+/* Efeito Skeleton Loader para carregamento inicial */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-strong) !important;
+  border-color: var(--border-soft) !important;
+  color: transparent !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(12, 184, 207, 0.05),
+      rgba(12, 184, 207, 0.2),
+      rgba(12, 184, 207, 0.05),
+      transparent);
+  animation: skeleton-shimmer 2s infinite linear;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50% !important;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(12, 184, 207, 0.1);
+  border-top: 4px solid var(--c1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 2;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.skeleton-fade-out {
+  opacity: 0 !important;
+}
+
+/* Estilo para que o conteúdo interno não "vaze" o skeleton */
+.skeleton::placeholder {
+  color: transparent !important;
+}
+
+.skeleton svg,
+.skeleton img,
+.skeleton span,
+.skeleton h4,
+.skeleton p {
+  visibility: hidden;
+}
+
+#qrcode:has(.skeleton-circle) {
+  background: none;
+  box-shadow: none;
+}
+
+.toast {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-500px);
+  background: var(--color2);
+  border: 1px solid var(--c1);
+  color: var(--color6);
+  padding: 12px 20px;
+  border-radius: 12px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 0.9rem;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Estilos da Tela de Splash (Inicialização) */
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #01030d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.splash-logo {
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(12, 184, 207, 0.3));
+  animation: splash-pulse 2s ease-in-out infinite;
+}
+
+.splash-loader {
+  width: 40px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-loader::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  background: var(--c1);
+  animation: splash-loading 1.5s infinite ease-in-out;
+}
+
+.splash-phrase {
+  font-size: 0.8rem;
+  color: rgba(225, 226, 227, 0.4);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: -8px;
+}
+
+@keyframes splash-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes splash-loading {
+  0% { left: -50%; }
+  100% { left: 100%; }
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Banner de Instalação PWA */
+.pwa-install-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 420px;
+  background: #121429;
+  border: 1px solid var(--c1);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 9999;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.pwa-install-banner img { width: 42px; height: 42px; border-radius: 10px; }
+.banner-text { flex: 1; }
+.banner-text strong { display: block; font-size: 0.95rem; color: #fff; }
+.banner-text p { font-size: 0.75rem; color: rgba(225, 226, 227, 0.6); margin: 0; }
+.banner-actions { display: flex; align-items: center; gap: 4px; }
+.banner-actions .textBtn { font-size: 0.85rem; padding: 8px; }
