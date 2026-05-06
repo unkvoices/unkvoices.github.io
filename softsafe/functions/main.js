@@ -1,30 +1,10 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
   getFirestore, collection, doc, getDoc, setDoc, updateDoc, increment, onSnapshot, addDoc, query, orderBy, getDocs, where, runTransaction, deleteDoc, collectionGroup, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, setPersistence, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, deleteUser, reauthenticateWithCredential, updatePassword, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, setPersistence, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, deleteUser, reauthenticateWithCredential, updatePassword, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// --- CONFIGURAÇÃO DO FIREBASE ---
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBZtT7r-2m_4IXj_e3xXc0H5-zJS2G4FQ0",
-  authDomain: "softsafe-company.firebaseapp.com",
-  databaseURL: "https://softsafe-company-default-rtdb.firebaseio.com",
-  projectId: "softsafe-company",
-  messagingSenderId: "660443243088",
-  appId: "1:660443243088:web:8a2ad56dcea7c95cdd2755",
-  measurementId: "G-HCTSMFD4N9"
-};
-
-// Inicializar Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-console.log("firebase inicializado");
-const auth = getAuth(app);
-
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error("Erro ao definir persistência:", error);
-});
+// --- IMPORTAR CONFIGURAÇÃO COMPARTILHADA ---
+import { auth, db } from "/assets/js/firebase-config.js";
 
 let currentUser = null;
 let unsubscribeComments = null; // To manage real-time listener
@@ -1364,12 +1344,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${minutes}:${String(secs).padStart(2, "0")}`;
   }
 
-  function setProductPageCarouselTransform(offsetPx = 0, animate = true) {
-    if (!productPageCarouselInner || !productPageCarousel) return;
-    const viewportWidth = productPageCarousel.clientWidth || 1;
-    productPageCarouselInner.style.transition = animate ? "" : "none";
-    const baseTranslate = -(currentProductPageCarouselIndex * viewportWidth);
-    productPageCarouselInner.style.transform = `translateX(${baseTranslate + offsetPx}px)`;
+  /**
+   * Helper genérico para aplicar transformações de carrossel
+   * @param {HTMLElement} inner - O elemento que contém os itens
+   * @param {number} index - Índice atual
+   * @param {number} offsetPx - Deslocamento para swipe
+   * @param {boolean} animate - Se deve usar transição
+   */
+  function applyCarouselTransform(inner, index, offsetPx = 0, animate = true) {
+    if (!inner) return;
+    const viewportWidth = inner.parentElement.clientWidth || 1;
+    inner.style.transition = animate ? "transform 0.3s ease-out" : "none";
+    const baseTranslate = -(index * viewportWidth);
+    inner.style.transform = `translateX(${baseTranslate + offsetPx}px)`;
   }
 
   function updateProductPageCarouselPosition(animate = true) {
@@ -3590,4 +3577,3 @@ function scrollToProducts() {
     behavior: "smooth"
   });
 }
-
